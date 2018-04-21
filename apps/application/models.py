@@ -45,15 +45,16 @@ class UserManager(models.Manager):
             if len(user) == 0:
                 errors["no_user"] = "Log in failed."
 
-            user = User.objects.get(email=postData['email'])
-            encoded_pw = user.password.encode()
+            else:
+                user = User.objects.get(email=postData['email'])
+                encoded_pw = user.password.encode()
 
-            #if email in the database, check if passwords match, decrypting password first.
-            if user:
-                print("password = ", postData["password"])
+                #if email in the database, check if passwords match, decrypting password first.
+                if user:
+                    print("password = ", postData["password"])
 
-                if bcrypt.hashpw(postData["password"].encode(), user.password.encode()) != encoded_pw:
-                    errors["password_fail"] = "Incorrect password"
+                    if bcrypt.hashpw(postData["password"].encode(), user.password.encode()) != encoded_pw:
+                        errors["password_fail"] = "Incorrect password"
 
 
         return errors
